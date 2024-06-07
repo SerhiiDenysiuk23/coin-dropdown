@@ -1,5 +1,6 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {ReactComponent as StarIcon} from "../assets/icons/star.svg";
+import {FixedSizeList as List} from 'react-window';
 
 const CoinDropdown: React.FC<{ coinList: string[] }> = ({coinList}) => {
   const [dropDownToggle, setDropDownToggle] = useState(false)
@@ -70,6 +71,17 @@ const CoinDropdown: React.FC<{ coinList: string[] }> = ({coinList}) => {
     }
   }
 
+  const renderRow = ({index, style}: { index: number, style: React.CSSProperties }) => (
+    <div className={"coin-dropdown__list__elem"} style={style} key={coinsToView[index]}>
+      <StarIcon
+        className={`star-icon ${favoriteCoins.includes(coinsToView[index]) ? "active" : ""}`}
+        onClick={() => {
+          handleSetFavorite(coinsToView[index])
+        }}
+      /> {coinsToView[index]}
+    </div>
+  );
+
   return (
     <div className={"coin-dropdown"} ref={dropdownRef}>
       <div onClick={() => {
@@ -97,19 +109,15 @@ const CoinDropdown: React.FC<{ coinList: string[] }> = ({coinList}) => {
             </div>
 
           </div>
-          <ul className="coin-dropdown__list">
-            {
-              coinsToView.map(item => (
-                <li key={item}>
-                  <StarIcon className={`star-icon ${favoriteCoins.includes(item) ? "active" : ""}`}
-                            onClick={() => {
-                              handleSetFavorite(item)
-                            }}/>
-                  {item}
-                </li>
-              ))
-            }
-          </ul>
+          <List
+            className={"coin-dropdown__list"}
+            height={500}
+            itemCount={coinsToView.length}
+            itemSize={30}
+            width="100%"
+          >
+            {renderRow}
+          </List>
         </div>
       }
     </div>

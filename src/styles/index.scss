@@ -78,10 +78,7 @@ body{
   }
 
   &__list{
-    height: 500px;
-    overflow-y: auto;
-
-    li{
+    &__elem{
       padding: 5px 20px;
     }
 
