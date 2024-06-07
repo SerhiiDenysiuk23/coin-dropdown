@@ -1,0 +1,120 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.header{
+  height: 50px;
+  width: 100%;
+  border-bottom: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body{
+  background: #111111;
+  color: white;
+  font-size: 14px;
+}
+
+.coin-dropdown{
+  position: relative;
+  height: 100%;
+  width: 120px;
+
+  &__toggle{
+    height: 100%;
+    font-size: 20px;
+    text-transform: uppercase;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+
+  &__body{
+    position: absolute;
+    top: 110%;
+    right: 0;
+
+    width: 200px;
+    border-radius: 10px;
+    border: 1px solid white;
+  }
+
+  &__header{
+    padding: 5px 0;
+  }
+
+  &__search{
+    padding: 5px 20px 10px;
+    border-bottom: 1px solid white;
+    input{
+      width: 100%;
+      outline: none;
+      border: none;
+      background: transparent;
+      color: white;
+    }
+  }
+
+  &__filters{
+    padding: 10px 20px;
+  }
+  &__filter-button{
+    width: 50%;
+    height: 30px;
+    background: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    &.active{
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  &__list{
+    height: 500px;
+    overflow-y: auto;
+
+    li{
+      padding: 5px 20px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #888;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+
+  }
+}
+
+.star-icon{
+  fill: none;
+  stroke: white;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  &.active{
+    fill: white;
+  }
+}
