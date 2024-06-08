@@ -1,38 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+$active-search-color: #3a383a;
+$textColor: #e0e0e0;;
+$textColorDimmed: #e0e0e0bb;
+$textColorVeryDimmed: #e0e0e0a2;
+$textColorSuperDimmed: #e0e0e03f;
+$borderColor: #515151;
+$bgColor: #000804;
+$highlightColor: #262626;
+
 *{
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
+html{
+  ::-webkit-scrollbar-corner {
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: $bgColor;
+    border-radius: 2px;
+  }
+}
+
 .header{
   height: 50px;
   width: 100%;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid $borderColor;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 body{
-  background: #111111;
-  color: white;
+  background: $bgColor;
+  color: $textColor;
   font-size: 14px;
+  font-family: "IBM Plex Sans", sans-serif;
 }
 
 .coin-dropdown{
   position: relative;
-  height: 100%;
-  width: 120px;
+
+  *{
+    user-select: none;
+  }
 
   &__toggle{
-    height: 100%;
-    font-size: 20px;
+    width: 120px;
+    padding: 5px;
+    font-size: 16px;
     text-transform: uppercase;
-    line-height: 50px;
-    text-align: center;
     cursor: pointer;
-    user-select: none;
-    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+    &:hover, &.active{
+      background: $borderColor;
+      border-radius: 8px;
+      border: 1px solid $highlightColor;
+    }
+
   }
 
 
@@ -41,18 +82,27 @@ body{
     top: 110%;
     right: 0;
 
-    width: 200px;
-    border-radius: 10px;
-    border: 1px solid white;
+    color: $textColorDimmed;
+
+    width: 290px;
+    border-radius: 14px;
+    border: 1px solid $borderColor;
+    overflow: hidden;
+    font-size: 16px;
   }
 
   &__header{
-    padding: 5px 0;
+    padding-top: 5px;
+    background: $bgColor;
+
   }
 
   &__search{
     padding: 5px 20px 10px;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid $borderColor;
+    display: flex;
+    gap: .5em;
+    font-size: 16px;
     input{
       width: 100%;
       outline: none;
@@ -63,55 +113,77 @@ body{
   }
 
   &__filters{
-    padding: 10px 20px;
+    display: flex;
+    padding: .5em 7px;
+    justify-content: space-between;
   }
   &__filter-button{
-    width: 50%;
+    width: 130px;
+    padding: 0 14px;
     height: 30px;
     background: transparent;
-    color: white;
+    color: $textColor;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    font-size: 16px;
+    border-radius: 8px;
+    &:hover{
+      background: $highlightColor;
+    }
+
     &.active{
-      background: rgba(255, 255, 255, 0.1);
+      font-weight: 700;
+      gap: .7em;
     }
   }
 
+
   &__list{
-    &__elem{
-      padding: 5px 20px;
-    }
-
-    &::-webkit-scrollbar {
-      width: 5px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: #888;
+    list-style-type: none;
+    overflow-y: auto;
+    background: rgba(0, 8, 4, 0.5);
+    backdrop-filter: blur(30px);
+    padding: 1em 5px;
+    &__elem, li{
+      padding: 7px 17px;
       border-radius: 10px;
-    }
+      cursor: pointer;
+      .star-icon{
+        margin-right: 1em;
 
-    &::-webkit-scrollbar-thumb:hover {
-      background: #555;
+      }
+      &:hover{
+        background: $borderColor;
+      }
     }
-
-    scrollbar-width: thin;
-    scrollbar-color: #888 transparent;
 
   }
 }
 
 .star-icon{
   fill: none;
-  stroke: white;
-  width: 15px;
-  height: 15px;
+  stroke: $textColor;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   &.active{
-    fill: white;
+    fill: $textColor;
   }
+}
+
+.search-icon{
+  width: 30px;
+  height: 30px;
+  fill: $textColor;
+}
+
+
+.test{
+  background: rgb(72,43,43);
+  background: radial-gradient(circle, rgba(72,43,43,1) 0%, rgba(6,0,0,1) 100%);
+  height: 100vh;
 }

@@ -1,6 +1,7 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {ReactComponent as StarIcon} from "../assets/icons/star.svg";
-import {FixedSizeList as List} from 'react-window';
+import {ReactComponent as SearchIcon} from "../assets/icons/search.svg";
+import CoinsVirtualScrolled from "./CoinsVirtualScrolled";
 
 const CoinDropdown: React.FC<{ coinList: string[] }> = ({coinList}) => {
   const [dropDownToggle, setDropDownToggle] = useState(false)
@@ -19,6 +20,8 @@ const CoinDropdown: React.FC<{ coinList: string[] }> = ({coinList}) => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setDropDownToggle(false);
+        setSearchQuery("")
+        setActiveButton("All Coins")
       }
     }
 
@@ -36,15 +39,18 @@ const CoinDropdown: React.FC<{ coinList: string[] }> = ({coinList}) => {
 
   useEffect(() => {
     if (searchQuery === "") {
-      setCoinsToView(coinList);
-    } else {
-      setActiveButton("All Coins")
-      const filteredCoins = coinList.filter(item =>
+      setCoinsToView(activeButton === "Favorites" ? favoriteCoins : coinList);
+      return
+    }
+
+    const filteredCoins = (activeButton === "Favorites" ? favoriteCoins : coinList)
+      .filter(item =>
         item.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
-      setCoinsToView(filteredCoins);
-    }
-  }, [searchQuery]);
+
+    setCoinsToView(filteredCoins);
+
+  }, [searchQuery, activeButton]);
 
   useEffect(() => {
     if (activeButton === 'Favorites') {
@@ -53,7 +59,7 @@ const CoinDropdown: React.FC<{ coinList: string[] }> = ({coinList}) => {
       setCoinsToView(coinList)
     }
 
-  }, [activeButton]);
+  }, [activeButton, favoriteCoins]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value)
@@ -61,6 +67,7 @@ const CoinDropdown: React.FC<{ coinList: string[] }> = ({coinList}) => {
 
   const handleFilterClick = (buttonName: 'All Coins' | 'Favorites') => {
     setActiveButton(buttonName);
+    setSearchQuery("")
   }
 
   const handleSetFavorite = (coin: string) => {
@@ -71,35 +78,29 @@ const CoinDropdown: React.FC<{ coinList: string[] }> = ({coinList}) => {
     }
   }
 
-  const renderRow = ({index, style}: { index: number, style: React.CSSProperties }) => (
-    <div className={"coin-dropdown__list__elem"} style={style} key={coinsToView[index]}>
-      <StarIcon
-        className={`star-icon ${favoriteCoins.includes(coinsToView[index]) ? "active" : ""}`}
-        onClick={() => {
-          handleSetFavorite(coinsToView[index])
-        }}
-      /> {coinsToView[index]}
-    </div>
-  );
-
   return (
     <div className={"coin-dropdown"} ref={dropdownRef}>
       <div onClick={() => {
         setDropDownToggle(prevState => !prevState)
-      }} className={'coin-dropdown__toggle'}>search
+      }} className={`coin-dropdown__toggle ${dropDownToggle ? "active" : ""}`}><SearchIcon className={"search-icon"}/> search
       </div>
       {
         dropDownToggle &&
         <div className={'coin-dropdown__body'}>
           <div className="coin-dropdown__header">
             <div className="coin-dropdown__search">
+              <SearchIcon className={'search-icon'}/>
               <input type="search" placeholder="Search..." value={searchQuery} onChange={handleSearch}/>
             </div>
             <div className="coin-dropdown__filters">
               <button
                 className={`coin-dropdown__filter-button ${activeButton === 'Favorites' ? 'active' : ''}`}
                 onClick={() => handleFilterClick("Favorites")}
-              >Favorites
+              >
+                <StarIcon
+                  className={`star-icon active`}
+                />
+                Favorites
               </button>
               <button
                 className={`coin-dropdown__filter-button ${activeButton === 'All Coins' ? 'active' : ''}`}
@@ -109,15 +110,8 @@ const CoinDropdown: React.FC<{ coinList: string[] }> = ({coinList}) => {
             </div>
 
           </div>
-          <List
-            className={"coin-dropdown__list"}
-            height={500}
-            itemCount={coinsToView.length}
-            itemSize={30}
-            width="100%"
-          >
-            {renderRow}
-          </List>
+
+          <CoinsVirtualScrolled itemHeight={38} containerHeight={350} items={coinsToView} favoriteCoins={favoriteCoins} handleSetFavorite={handleSetFavorite}/>
         </div>
       }
     </div>

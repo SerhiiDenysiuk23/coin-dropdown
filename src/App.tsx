@@ -10,6 +10,7 @@ function App() {
       <header className="header">
         <CoinDropdown coinList={data}/>
       </header>
+      <div className="test"></div>
     </div>
   );
 }
